@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Portafolio - Liquid Glass</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <video autoplay muted loop playsinline class="background-video">
+        <source src="https://videos.pexels.com/video-files/13830677/13830677-hd_1920_1080_30fps.mp4" type="video/mp4">
+    </video>
+    <div class="background-container" style="display:none;">
+        <img src="assets/background.jpg" alt="Fondo de desierto" class="background-image">
+    </div>
+    <header class="navbar-container">
+        <div class="navbar-bubble navbar-bubble-left">
+            <button id="theme-toggle" class="bubble-btn" title="Cambiar Tema">
+                <img id="theme-img" src="https://i.pinimg.com/1200x/80/a7/76/80a776273949dbd92b4c4b982edd5d15.jpg" alt="Cambiar Tema" style="width:32px;height:32px;object-fit:contain;">
+            </button>
+        </div>
+        <nav class="navbar">
+            <button class="nav-button active" data-target="home">Home</button>
+            <button class="nav-button" data-target="about">Sobre Mí</button>
+            <button class="nav-button" data-target="projects">Proyectos</button>
+            <button class="nav-button" data-target="contact">Contacto</button>
+        </nav>
+        <div class="navbar-bubble navbar-bubble-right">
+            <button id="mute-toggle" class="bubble-btn" title="Mute">
+                <img id="mute-img" src="https://i.pinimg.com/1200x/2f/74/40/2f744003aaef61ab39e2491a7639eddf.jpg" alt="Mute" style="width:32px;height:32px;object-fit:contain;">
+            </button>
+        </div>
+    </header>
+    <main class="content-wrapper">
+        <section id="home" class="content-panel active">
+            <div class="panel-inner home-widgets-row">
+                <span class="global-dots">
+                    <span>●</span><br>
+                    <span>●</span><br>
+                    <span>●</span>
+                </span>
+                <div class="home-widgets-column">
+                    <div class="widget">
+                        <h1>¡Hola! Soy kirpul</h1>
+                    </div>
+                    <div class="widget">
+                        <p>Desarrollador Web | Diseñador UX/UI | [game designer]</p>
+                    </div>
+                </div>
+                <div class="widget widget-img-left">
+                    <img src="https://scontent.fmar7-1.fna.fbcdn.net/v/t39.30808-6/488657504_1726945394917262_5943496697246670785_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=jrXqDyVhmfEQ7kNvwHqaS6N&_nc_oc=AdnJ9j4xpx4-RNr29t-EERRJ7U8RxsH0tq_HovzB7cDmyAKI4hnVCJv8OcWTFcUjRLU&_nc_zt=23&_nc_ht=scontent.fmar7-1.fna&_nc_gid=22JYHZb3AE85rnLyY9lEQQ&oh=00_AfSvLtqW2UJVWTjQTZ0xAn-ie0Ta9pEwJWudohAec1IyMQ&oe=687534B8" alt="Widget Izquierda" style="width:90px;height:90px;object-fit:cover;border-radius:18px;">
+                </div>
+                <div class="home-image-container" style="flex-direction:column;align-items:center;gap:18px;">
+                    <div class="widget widget-img-center">
+                        <img src="https://i.pinimg.com/736x/1f/c3/e4/1fc3e44d234be61616b3b9541d1c9b2d.jpg" alt="Widget Central" style="width:120px;height:120px;object-fit:cover;border-radius:22px;">
+                    </div>
+                    <div class="side-widgets">
+                        <div class="widget ios-clock-widget">
+                            <div id="clock-time" class="clock-time">10:00:00</div>
+                            <div id="clock-date" class="clock-date">01/06/2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about" class="content-panel">
+            <div class="panel-inner">
+                <h2>Sobre Mí</h2>
+                <p>🙋‍♂️ ¡Hola! Soy un apasionado diseñador gráfico y programador creativo. Me encanta transformar ideas en experiencias digitales únicas y visualmente atractivas.</p>
+                <ul style="list-style: none; padding-left: 0; margin-bottom: 18px;">
+                    <li>💻 <b>Frontend:</b> HTML, CSS, JavaScript</li>
+                    <li>🎨 <b>Diseño:</b> Figma, Photoshop, Illustrator</li>
+                    <li>🕹️ <b>Game Design:</b> Unity, Blender, Godot</li>
+                    <li>🚀 <b>Otras:</b> Python, Git, UX/UI</li>
+                </ul>
+                <p style="font-style: italic; color: #8c8cff;">"La creatividad es la inteligencia divirtiéndose."</p>
+                <p>Siempre busco aprender algo nuevo y superarme en cada proyecto. ¡Trabajemos juntos y creemos algo increíble! ✨</p>
+            </div>
+        </section>
+        <section id="projects" class="content-panel">
+            <div class="panel-inner">
+                <h2>Mis Proyectos</h2>
+                <p style="color:#8c8cff; font-weight:600; margin-bottom:18px;">🚀 Aquí algunos de mis trabajos favoritos. Cada uno es un reto y una oportunidad de aprender algo nuevo.</p>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <h3>🧮 Calculadora Científica</h3>
+                        <p>Una calculadora avanzada para operaciones matemáticas complejas.<br>
+                        <span style="color:#8c8cff; font-size:0.98em;">Tecnologías: <b>HTML</b>, <b>CSS</b>, <b>JavaScript</b></span></p>
+                        <a href="#" target="_blank">Ver Proyecto</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>🎮 Librería de Juegos Playnite</h3>
+                        <p>Organiza y visualiza tu colección de juegos de forma moderna y eficiente.<br>
+                        <span style="color:#8c8cff; font-size:0.98em;">Tecnologías: <b>Python</b>, <b>HTML</b>, <b>JavaScript</b></span></p>
+                        <a href="#" target="_blank">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="content-panel">
+            <div class="panel-inner">
+                <h2>Contacto</h2>
+                <form class="contact-form">
+                    <input type="text" placeholder="Tu Nombre" required>
+                    <input type="email" placeholder="Tu Correo Electrónico" required>
+                    <textarea placeholder="Tu Mensaje" rows="5" required></textarea>
+                    <button type="submit">Enviar Mensaje</button>
+                </form>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/paul-moran-56946a374/" target="_blank">LinkedIn</a>
+                    <a href="https://github.com/kirpul1266" target="_blank">GitHub</a>
+                    <a href="https://www.instagram.com/kirpul_ex/?igsh=MWwxNHZibHV3NWdqYw%3D%3D&utm_source=qr" target="_blank">Instagram</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cuadro flotante con video de YouTube -->
+    <div id="youtube-float-box" class="youtube-float-box widget">
+        <button id="close-youtube-box" class="close-youtube-box">×</button>
+        <iframe id="youtube-widget" width="120" height="68" src="https://www.youtube.com/embed/Hj1gKe4-8aQ?autoplay=1&mute=0&enablejsapi=1" title="YouTube video player" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

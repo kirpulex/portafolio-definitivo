@@ -1,0 +1,691 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap'); /* Fuente principal */
+
+/* Variables CSS para facilitar la personalización */
+:root {
+    --glass-background: rgba(255, 255, 255, 0.1); /* Color de fondo del cristal (transparente) */
+    --glass-border: rgba(255, 255, 255, 0.2);     /* Borde del cristal */
+    --text-color: #f0f0f0;                       /* Color de texto principal */
+    --primary-color: #8c8cff;                    /* Color de acento (azul/púrpura) */
+    --transition-duration: 0.6s;                 /* Duración de las animaciones de panel */
+    --blur-strength: 15px;                       /* Intensidad del desenfoque del cristal */
+}
+
+/* Reset básico y configuración de HTML/BODY para ocupar toda la pantalla */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Incluye padding y borde en el ancho/alto */
+}
+
+html, body {
+    height: 100%; /* Asegura que html y body ocupen toda la altura del viewport */
+    width: 100%;  /* Asegura que html y body ocupen todo el ancho del viewport */
+    overflow: hidden; /* ¡Clave! Evita cualquier barra de desplazamiento en todo el documento */
+}
+
+body {
+    font-family: 'Montserrat', sans-serif; /* Aplica la fuente importada */
+    color: var(--text-color); /* Color de texto global */
+    display: flex; /* Utiliza flexbox para centrar el contenido principal */
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    position: relative; /* Base para el posicionamiento de elementos hijos */
+    background-color: #333; /* Color de fondo de respaldo si el video no carga */
+}
+
+/* --- Contenedor del Fondo (video o iframe) --- */
+.background-container {
+    position: fixed; /* Fija el contenedor al viewport (ventana del navegador) */
+    top: 0;
+    left: 0;
+    width: 100vw;   /* 100% del ancho del viewport */
+    height: 100vh;  /* 100% del alto del viewport */
+    z-index: -1;    /* ¡Clave! Lo coloca detrás de todo el contenido (navbar, paneles) */
+    overflow: hidden; /* Asegura que el video/iframe no se desborde fuera de este contenedor */
+    background-color: #000; /* Fondo negro para evitar "flashes" blancos al cargar videos */
+}
+
+/* --- Estilos para Video de Fondo (Opción 1: <video> tag) --- */
+.background-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el video dentro de su contenedor */
+    min-width: 100%; /* Asegura que el video sea al menos tan grande como su contenedor */
+    min-height: 100%;
+    width: auto;     /* Permite que se escale proporcionalmente */
+    height: auto;
+    object-fit: cover; /* ¡Clave! Hace que el video cubra el contenedor completo, recortando si es necesario, sin distorsionarse */
+    filter: brightness(0.7) contrast(1.1); /* Oscurece y da contraste para mejorar la legibilidad del texto */
+}
+
+/* --- Estilos para YouTube Iframe como Fondo (Opción 2: <iframe>) --- */
+.background-youtube-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centra el iframe dentro de su contenedor */
+    width: 100vw; /* Ocupa el 100% del ancho del viewport */
+    height: 100vh; /* Ocupa el 100% del alto del viewport */
+    min-width: 100vw; /* Asegura que el iframe cubra todo el viewport */
+    min-height: 100vh;
+    filter: brightness(0.7) contrast(1.1); /* Oscurece y da contraste */
+    pointer-events: none; /* ¡Clave! Hace que el iframe sea "transparente" a los clics del ratón */
+}
+
+
+/* --- Estilos para la Barra de Navegación (Navbar) --- */
+.navbar-container {
+    position: fixed; /* Fija la barra de navegación en la parte superior */
+    top: 30px; /* Distancia desde el borde superior */
+    left: 50%;
+    transform: translateX(-50%); /* Centra horizontalmente */
+    z-index: 100; /* Asegura que esté por encima de todo el contenido */
+    padding: 10px 25px; /* Relleno interno */
+    
+    /* Efecto Liquid Glass aplicado directamente */
+    background: var(--glass-background);
+    backdrop-filter: blur(var(--blur-strength)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+    display: flex; /* Utiliza flexbox para organizar los botones */
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Espacio entre los botones */
+}
+
+.navbar-container .nav-button {
+    background: transparent; /* Fondo transparente para los botones */
+    border: none; /* Sin borde */
+    color: var(--text-color); /* Color de texto del botón */
+    font-size: 1.1em;
+    padding: 10px 15px;
+    cursor: pointer; /* Cursor de mano al pasar por encima */
+    transition: all 0.3s ease; /* Transición suave para todos los cambios */
+    position: relative;
+    overflow: hidden; /* Para el efecto de brillo */
+}
+
+.navbar-container .nav-button:hover {
+    color: var(--primary-color); /* Color al pasar el ratón */
+    text-shadow: 0 0 5px var(--primary-color); /* Sombra de texto sutil */
+}
+
+.navbar-container .nav-button.active {
+    color: var(--primary-color); /* Color del botón activo */
+    font-weight: 700; /* Negrita para el botón activo */
+    text-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Efecto de brillo sutil en hover para los botones de navegación */
+.navbar-container .nav-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Inicia fuera del botón a la izquierda */
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1); /* Color del brillo */
+    transform: skewX(-30deg); /* Inclina el brillo */
+    transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1); /* Animación más compleja */
+    z-index: -1;
+}
+
+.navbar-container .nav-button:hover::before {
+    left: 100%; /* Desliza el brillo hacia la derecha */
+}
+
+
+/* --- Contenedor Principal de los Paneles (Content Wrapper) --- */
+.content-wrapper {
+    position: relative;
+    width: 90%; 
+    max-width: 1200px; 
+    height: 70vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px; 
+    z-index: 10; 
+}
+
+/* --- Paneles de Contenido (Home, Sobre Mí, Proyectos, Contacto) --- */
+.content-panel {
+    position: absolute; 
+    width: 100%;
+    height: 100%;
+    
+    /* Efecto Liquid Glass aplicado directamente */
+    background: var(--glass-background);
+    backdrop-filter: blur(var(--blur-strength)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+    padding: 40px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0; 
+    pointer-events: none; 
+    transform: translateY(20px) scale(0.95); 
+    transition: opacity var(--transition-duration) ease-out, 
+                transform var(--transition-duration) ease-out;
+}
+
+/* Cuando un panel tiene la clase 'active', se muestra y anima */
+.content-panel.active {
+    opacity: 1; 
+    pointer-events: auto; 
+    transform: translateY(0) scale(1); 
+}
+
+.panel-inner {
+    max-width: 800px; 
+    width: 100%;
+    /* Estilos para el contenido interno */
+}
+
+.content-panel h1, .content-panel h2 {
+    font-size: 2.8em;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(140, 140, 255, 0.5);
+}
+
+.content-panel p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.content-panel ul {
+    list-style: none; /* Quita viñetas de lista */
+    padding: 0;
+    margin-bottom: 20px;
+    text-align: left; /* Alinea el texto de la lista a la izquierda */
+}
+
+.content-panel ul li {
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+/* Estilos de la Cuadrícula de Proyectos */
+.project-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 30px; 
+    margin-top: 30px;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.project-card {
+    /* Efecto Liquid Glass aplicado directamente */
+    background: var(--glass-background);
+    backdrop-filter: blur(var(--blur-strength)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    padding: 25px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s, border 0.3s, box-shadow 0.3s;
+    min-width: 280px;
+    max-width: 350px;
+    flex: 1 1 280px;
+}
+
+/* Cuando la sección de proyectos está activa, las tarjetas no tienen fondo ni borde */
+#projects.content-panel.active .project-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.project-card:hover {
+    transform: translateY(-5px); /* Se eleva ligeramente */
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+}
+
+.project-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.project-card p {
+    font-size: 0.95em;
+    margin-bottom: 10px;
+}
+
+.project-card a {
+    display: inline-block; /* Permite margen superior y padding */
+    margin-top: 15px;
+    color: var(--primary-color);
+    text-decoration: none;
+    border: 1px solid var(--primary-color);
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.project-card a:hover {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+/* Estilos del Formulario de Contacto */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre los elementos del formulario */
+    max-width: 500px;
+    margin: 30px auto;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 12px 15px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.05); /* Fondo semitransparente */
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 1em;
+    outline: none; /* Elimina el borde de enfoque por defecto */
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--primary-color); /* Borde de color al enfocar */
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo un poco más visible al enfocar */
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6); /* Color del placeholder */
+}
+
+.contact-form button {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.contact-form button:hover {
+    background-color: #7a7aff; /* Tono ligeramente más oscuro al pasar el ratón */
+    transform: translateY(-2px); /* Pequeño efecto de elevación */
+}
+
+.social-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+
+/* --- Diseño Responsivo (para móviles y tabletas) --- */
+@media (max-width: 768px) {
+    .navbar-container {
+        padding: 10px 15px;
+        gap: 10px;
+        width: 90%;
+        top: 20px;
+    }
+
+    .navbar-container .nav-button {
+        font-size: 0.9em;
+        padding: 8px 10px;
+    }
+
+    .content-wrapper {
+        width: 95%; /* Ocupa más ancho en pantallas pequeñas */
+        height: auto; /* Altura automática para que el contenido fluya */
+        margin-top: 100px;
+        padding: 20px 0;
+    }
+
+    .content-panel {
+        padding: 30px 20px; /* Menor padding en móviles */
+    }
+
+    .content-panel h1, .content-panel h2 {
+        font-size: 2em; /* Fuentes más pequeñas */
+    }
+
+    .content-panel p, .content-panel ul li {
+        font-size: 1em;
+    }
+
+    .project-grid {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        gap: 20px;
+    }
+    .project-card {
+        min-width: 220px;
+        max-width: 350px;
+        flex: 1 1 220px;
+    }
+}
+
+/* Media query para pantallas aún más pequeñas (ej. iPhone SE) */
+@media (max-width: 480px) {
+    .navbar-container {
+        gap: 8px;
+    }
+    .navbar-container .nav-button {
+        font-size: 0.8em;
+        padding: 6px 8px;
+    }
+    .content-panel {
+        padding: 20px 15px;
+    }
+}
+
+/* --- Widgets tipo iOS en Home --- */
+.home-widgets-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.global-dots {
+    position: absolute;
+    left: -130px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    color: #222;
+    letter-spacing: 0.1em;
+    user-select: none;
+    pointer-events: none;
+    font-weight: bold;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+}
+.global-dots span {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.widget-img-left {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    align-self: flex-start;
+}
+
+.home-widgets-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.widget {
+    background: rgba(255,255,255,0.18);
+    border-radius: 28px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    padding: 28px 32px;
+    color: #222;
+    font-weight: 500;
+    text-align: left;
+    transition: box-shadow 0.3s, background 0.3s;
+}
+
+.widget-img-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 10px !important;
+}
+.widget-img-left img {
+    width: 200px !important;
+    height: 285px !important;
+    border-radius: 10px !important;
+    object-fit: cover;
+}
+
+.widget h1, .widget p {
+    margin: 0;
+    color: #222;
+    text-shadow: none;
+}
+
+/* --- Botones circulares para modo noche y volumen --- */
+.bubble-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: rgba(255,255,255,0.18);
+    box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.10);
+    border: 1.2px solid rgba(255,255,255,0.18);
+    transition: box-shadow 0.3s, background 0.3s;
+}
+.bubble-btn img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+/* --- Widgets iOS para reloj y modo noche --- */
+.side-widgets {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: stretch;
+    margin-top: 10px;
+}
+.ios-clock-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.22);
+    border-radius: 22px;
+    box-shadow: 0 4px 18px 0 rgba(31, 38, 135, 0.13);
+    border: 1.2px solid rgba(255,255,255,0.18);
+    padding: 18px 24px 14px 24px;
+    min-width: 180px;
+}
+.clock-time {
+    font-size: 2.2em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #222;
+    margin-bottom: 4px;
+}
+.clock-date {
+    font-size: 1em;
+    color: #444;
+    font-weight: 400;
+    text-align: center;
+}
+.ios-darkmode-widget {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.22);
+    border-radius: 22px;
+    box-shadow: 0 4px 18px 0 rgba(31, 38, 135, 0.13);
+    border: 1.2px solid rgba(255,255,255,0.18);
+    padding: 12px 0;
+    min-width: 180px;
+}
+.dark-mode-btn {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.dark-mode-btn img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+    transition: filter 0.2s;
+}
+.dark-mode-btn:active img {
+    filter: brightness(0.8) drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+}
+
+.home-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.home-profile-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.5);
+    box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.18);
+    background: #fff;
+}
+
+@media (max-width: 768px) {
+    .home-widgets-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        max-width: 95vw;
+    }
+    .home-image-container {
+        margin-top: 10px;
+    }
+    .home-profile-image {
+        width: 90px;
+        height: 90px;
+    }
+    .widget {
+        padding: 18px 14px;
+    }
+}
+
+
+/* --- Cuadro flotante de YouTube --- */
+.youtube-float-box {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 140px;
+    min-width: 0;
+    background: rgba(255,255,255,0.18);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    z-index: 4000;
+    padding: 10px 10px 8px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    transition: opacity 0.3s;
+}
+.youtube-float-box iframe {
+    border-radius: 10px;
+    width: 120px;
+    height: 68px;
+    border: none;
+    box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.10);
+    background: #222;
+}
+.close-youtube-box {
+    background: #fff;
+    color: #222;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 10;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.close-youtube-box:hover {
+    background: #e74c3c;
+    color: #fff;
+}
+@media (max-width: 600px) {
+    .youtube-float-box {
+        width: 90vw;
+        right: 2vw;
+        top: 8vw;
+        padding: 4px 2px 2px 2px;
+    }
+    .youtube-float-box iframe {
+        width: 80vw;
+        height: 45vw;
+    }
+}
+
+
+
